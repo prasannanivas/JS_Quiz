@@ -1,4 +1,4 @@
-[
+export const react_data = [
   {
     question:
       "Q1. If you want to import just the Component from the React library, what syntax do you use?",
@@ -9,7 +9,7 @@
       "import Component from 'react'",
       "import { Component } from 'react'",
     ],
-    answer: "import React, { Component } from 'react'",
+    answer: "import { Component } from 'react'",
     explanation:
       "To import just the `Component` from the React library, you use the syntax 'import React, { Component } from 'react'.",
   },
@@ -83,7 +83,7 @@
       "const [, first] = ['cooking', 'art', 'history']",
       "const [first] = ['cooking', 'art', 'history']",
     ],
-    answer: "const [, first] = ['cooking', 'art', 'history']",
+    answer: "const [first] = ['cooking', 'art', 'history']",
     explanation:
       "To get the first item from the array using array destructuring, you should adjust the line to 'const [, first] = ['cooking', 'art', 'history'];'.",
   },
