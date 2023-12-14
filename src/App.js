@@ -1,61 +1,44 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
-import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { react_data } from "./react-data.js";
+import React, { Suspense, useEffect, useState } from "react";
+import { react_data } from "./react-data";
+import { node_data } from "./node-data";
 import "./App.css";
+import Quiz from "./Quiz";
 
 function App() {
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [question, setQuestion] = useState({});
-  const [hasSelected, setHasSelected] = useState(false);
+  const [topic, setTopic] = useState(false);
+  const [question_data, setQuestionData] = useState([]);
 
   useEffect(() => {
-    if(questionIndex <= react_data.length){
-      setQuestion(react_data[questionIndex]);
-    }
-  
-    setHasSelected(false);
-  }, [questionIndex]);
 
-  const handleAnswer = (option) => {
-    if (option === question.answer) {
-      setScore((prev) => prev + 1);
+    switch(topic){
+      case "React":
+        setQuestionData(react_data);
+        return;
+      case "Node":
+        setQuestionData(node_data);
+        return;
+      default:
+        setQuestionData([]);
     }
-    setHasSelected(true);
-    // setTimeout(() => setQuestionIndex((prev) => prev + 1), 5000);
-  };
 
-  
+  }, [topic])
+
   return (
     <div className="App">
-
-      <h1> Score: {score} / {react_data.length}</h1>
-      {question && (
+      {topic ? (
         <>
-          <h2>{question.question}</h2>
-          {question.code && (
-            <SyntaxHighlighter language="jsx" style={docco}>
-              {question.code}
-            </SyntaxHighlighter>
-          )}
-          <div className="options">
-            {question?.options?.map((option, index) => (
-              <button 
-              className={`btn  ${hasSelected ? question.answer === option ? "btn-right": "btn-wrong": ""}`}
-                key={index}
-                onClick={() => handleAnswer(option)}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-
-          {hasSelected && <h3> Explanation: {question.explanation} </h3>}
-
-          {hasSelected && <button className="btn btn-next" onClick={() => setQuestionIndex(prev => prev+1)}>Next</button> }
-
+          <Quiz question_data={question_data}/>
         </>
+      ) : (
+        <Suspense>
+          <h1>Choose the topic</h1>
+          <button className="btn" onClick={() => setTopic("React")}>
+            React
+          </button>
+          <button className="btn" onClick={() => setTopic("Node")}>
+            Node
+          </button>
+        </Suspense>
       )}
     </div>
   );
